@@ -58,3 +58,13 @@
 
     display: none;
 }
+
+
+.custom-select-container {
+    position: relative;
+    display: inline-block;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+  }
+  

@@ -1,8 +1,5 @@
-
-import { fetchBreeds, fetchCatByBreed  } from "./cat-api";
+import { fetchBreeds, fetchCatByBreed} from "./cat-api";
 import Notiflix from "notiflix";
-
-
 
 const refs = {
     
@@ -38,6 +35,8 @@ function renderMarkup(data) {
        return acum+`<option value="${element.id}">${element.name}</option>`
      },"")
      refs.select.insertAdjacentHTML("afterbegin",markup);
+
+    
 }
 
 //Фетчим конкретный элемент списка 
@@ -77,6 +76,5 @@ function renderCatInfo(data) {
         <p><span class="temper">Temperament: </span>${temperament}</p>
         </div>`
     refs.catInfo.innerHTML = markup;
-
 }
 
