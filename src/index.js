@@ -1,41 +1,40 @@
 import { fetchBreeds, fetchCatByBreed} from "./cat-api";
 import Notiflix from "notiflix";
 
-const refs = {
-    
-    select: document.querySelector(".breed-select"),
-    catInfo: document.querySelector(".cat-info"),
-    loader: document.querySelector(".loader"),
 
-}
+// DOM
+    const breedSelect = document.querySelector(".breed-select");
+    const catInfo = document.querySelector(".cat-info");
+    const loader = document.querySelector(".loader");
+    // let breeds = {};
+ 
+
+// EVENT LISNTENERS 
+
+breedSelect.addEventListener("change", fetchCatInfo);
 
 
-
-refs.select.addEventListener("change", fetchCatInfo);
-
-
-// Фетчим список
+// fETCH THE LIST OF BREED
 
 fetchBreeds()
 .then((data) => renderMarkup(data))
-.catch((error) => {
+.catch(() => {
 
     Notiflix.Notify.failure("Oops! Something went wrong! Try reloading the page!");
 });
 
 
-//Рендерим список
+//Render the list 
 
 function renderMarkup(data) {
   
-    refs.select.classList.remove("hidden");
-    refs.loader.classList.add("hidden");
-    refs.data = data;
-   const markup = data.reduce((acum,element) => {
-       return acum+`<option value="${element.id}">${element.name}</option>`
-     },"")
-     refs.select.insertAdjacentHTML("afterbegin",markup);
-
+    // const breeds = data;
+    breedSelect.classList.remove("hidden");
+    loader.classList.add("hidden");
+    
+    breedSelect.innerHTML = data.reduce((html,el) => {
+        return html+`<option value="${el.id}">${el.name}</option>`
+      },"");
     
 }
 
@@ -43,31 +42,30 @@ function renderMarkup(data) {
 
 function fetchCatInfo() {
 
-    refs.catInfo.classList.add("hidden");
-     refs.loader.classList.remove("hidden");
+    catInfo.classList.add("hidden");
+     loader.classList.remove("hidden");
 
-    const selectedValue = refs.select.value;
+    const selectedValue = breedSelect.value;
 
     fetchCatByBreed(selectedValue)
     .then((data) => renderCatInfo(data))
-    .catch((error) => {
+    .catch(() => {
 
         Notiflix.Notify.failure("Oops! Something went wrong! Try reloading the page!");
-    })
+    });
 }
 
 //Рендерим конкретный элемент списка
 
 function renderCatInfo(data) {
     
-    console.log('hello');
-    refs.catInfo.classList.remove("hidden");
-    refs.loader.classList.add("hidden");
+    catInfo.classList.remove("hidden");
+    loader.classList.add("hidden");
+    
 
-    const selectedIndex = refs.select.selectedIndex;
-    const name = refs.data[selectedIndex].name;
-    const description = refs.data[selectedIndex].description;
-    const temperament = refs.data[selectedIndex].temperament; 
+    const name = data[0].breeds[0].name;
+    const description = data[0].breeds[0].description;
+    const temperament = data[0].breeds[0].temperament;
    
     const markup = `<img src="${data[0].url}" alt="${name}" width="350">
     <div>
@@ -75,6 +73,6 @@ function renderCatInfo(data) {
         <p>${description}</p>
         <p><span class="temper">Temperament: </span>${temperament}</p>
         </div>`
-    refs.catInfo.innerHTML = markup;
+    catInfo.innerHTML = markup;
 }
 
